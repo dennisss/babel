@@ -255,12 +255,14 @@ helpers.classCallCheck = template(`
 helpers.createClass = template(`
   (function() {
     function defineProperties(target, props) {
-      for (var i = 0; i < props.length; i ++) {
-        var descriptor = props[i];
+      var keys = Object.keys[props];
+      for (var i = 0; i < keys.length; i++) {
+        var k = keys[i];
+		var descriptor = props[k];
         descriptor.enumerable = descriptor.enumerable || false;
         descriptor.configurable = true;
         if ("value" in descriptor) descriptor.writable = true;
-        Object.defineProperty(target, descriptor.key, descriptor);
+        Object.defineProperty(target, k, descriptor);
       }
     }
 
