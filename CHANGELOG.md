@@ -13,6 +13,144 @@ _Note: Gaps between patch versions are faulty, broken or test releases._
 
 See [CHANGELOG - 6to5](CHANGELOG-6to5.md) for the pre-4.0.0 version changelog.
 
+## v6.11.4 (2016-07-20)
+
+In this release among other things are some more optimizations for babel-generator ([#3584](https://github.com/babel/babel/pull/3584), [#3580](https://github.com/babel/babel/pull/3580)) as well as refactors.
+
+[@jamestalmage](https://github.com/jamestalmage) did some awesome clean for OptionsManager and some tests which may help future improvements to `babel-register` performance.
+
+#### Bug Fix
+* `babel-plugin-transform-remove-console`, `babel-plugin-transform-remove-debugger`, `babel-traverse`
+  * [#3583](https://github.com/babel/babel/pull/3583) Add block if parent is non-block statement for remove-console/debugger. ([@jhen0409](https://github.com/jhen0409))
+* `babel-plugin-transform-regenerator`
+  * [#3586](https://github.com/babel/babel/pull/3586) Avoid duplicated identifier sharing location - Fixes [#7436](https://github.com/babel/babel/issues/7436). ([@loganfsmyth](https://github.com/loganfsmyth))
+* `babel-cli`
+  * [#3578](https://github.com/babel/babel/pull/3578) Support all variations of v8Flags in babel-node. ([@danez](https://github.com/danez))
+
+#### Polish
+* `babel-core`
+  * [#3564](https://github.com/babel/babel/pull/3564) Extract config file resolution from OptionsManager . ([@jamestalmage](https://github.com/jamestalmage))
+* `babel-generator`, `babel-plugin-transform-es2015-modules-commonjs`
+  * [#3584](https://github.com/babel/babel/pull/3584) babel-generator: More refactoring and optimizations. ([@loganfsmyth](https://github.com/loganfsmyth))
+* `babel-plugin-transform-es2015-parameters`
+  * [#3574](https://github.com/babel/babel/pull/3574) Default parameters cleanup. ([@jridgewell](https://github.com/jridgewell))
+* `babel-generator`
+  * [#3581](https://github.com/babel/babel/pull/3581) babel-generator: Misc cleanup and stale code removal. ([@loganfsmyth](https://github.com/loganfsmyth))
+  * [#3580](https://github.com/babel/babel/pull/3580) Further optimize babel-generator Buffer. ([@jridgewell](https://github.com/jridgewell))
+
+#### Commiters: 6
+- Daniel Tschinder ([danez](https://github.com/danez))
+- Henry Zhu ([hzoo](https://github.com/hzoo))
+- James Talmage ([jamestalmage](https://github.com/jamestalmage))
+- Jhen-Jie Hong ([jhen0409](https://github.com/jhen0409))
+- Justin Ridgewell ([jridgewell](https://github.com/jridgewell))
+- Logan Smyth ([loganfsmyth](https://github.com/loganfsmyth))
+
+## v6.11.3 (2016-07-13)
+
+The main fix is @loganfsmyth's changes of some parts in babel-generator in [#3565](https://github.com/babel/babel/pull/3565) to fix issues with exponential code generation times in certain cases. 
+
+Items: the size of the array being generated
+Time: The time in ms to generate the code
+Length: The number of characters in the output code
+
+| Items | Old Time  | New Time | Length |
+|-------|-------|----------|--------|
+| 2     | 9     | 7        | 239    |
+| 4     | 2     | 5        | 465    |
+| 8     | 6     | 5        | 917    |
+| 16    | 6     | 6        | 1840   |
+| 32    | 15    | 11       | 3696   |
+| 64    | 25    | 3        | 7408   |
+| 128   | 93    | 13       | 14917  |
+| 256   | 380   | 18       | 30149  |
+| 512   | 1399  | 45       | 60613  |
+| 1024  | 5301  | 63       | 121614 |
+| 2048  | 20676 | 117      | 246542 |
+
+- Fix rest param optimization bug
+- Allow disabling "use strict" when using the cjs module transform.
+- Fix typo with es2016 preset
+
+#### Bug Fix
+* `babel-plugin-transform-es2015-parameters`
+  * [#3573](https://github.com/babel/babel/pull/3573) Fix error in rest parameter length optimization. ([@jridgewell](https://github.com/jridgewell))
+* `babel-generator`
+  * [#3567](https://github.com/babel/babel/pull/3567) Use the first item in the queue since it is the most recent.. ([@loganfsmyth](https://github.com/loganfsmyth))
+* `babel-plugin-transform-es2015-modules-commonjs`, `babel-plugin-transform-strict-mode`
+  * [#3562](https://github.com/babel/babel/pull/3562) Adds strictMode option to strict-mode transform. ([@thejameskyle](https://github.com/thejameskyle))
+* `babel-preset-es2016`
+  * [#3563](https://github.com/babel/babel/pull/3563) Use the proper transform plugin for preset-es2016.. ([@loganfsmyth](https://github.com/loganfsmyth))
+
+#### Polish
+* `babel-generator`
+  * [#3566](https://github.com/babel/babel/pull/3566) Remove unused Position#unshift. ([@jridgewell](https://github.com/jridgewell))
+  * [#3565](https://github.com/babel/babel/pull/3565) Make the code generator write-only to avoid exponential time generation. ([@loganfsmyth](https://github.com/loganfsmyth))
+
+#### Commiters: 3
+- James Kyle ([thejameskyle](https://github.com/thejameskyle))
+- Justin Ridgewell ([jridgewell](https://github.com/jridgewell))
+- Logan Smyth ([loganfsmyth](https://github.com/loganfsmyth))
+
+## v6.11.2 (2016-06-28)
+
+#### Bug Fix
+
+- [#3558](https://github.com/babel/babel/pull/3558) Fix non-unique 'ref' binding name for async functions. ([@loganfsmyth](https://github.com/loganfsmyth))
+
+## v6.11.1 (2016-06-27)
+
+#### Bug Fix
+
+- [#3552](https://github.com/babel/babel/pull/3552) Remove `jsx-self` plugin from the react preset for now. ([@hzoo](https://github.com/hzoo))
+
+#### Documentation
+
+- `babel-types` Update docs + scripts @ForbesLindesay
+
+## v6.11.0 (2016-06-26)
+
+- In this release, there's now an `es2016` preset which includes the [exponentiation operator](http://babeljs.io/docs/plugins/transform-exponentiation-operator/) (thanks for ([@ysmood](https://github.com/ysmood)) for giving us the npm package).
+- The `trailing-function-commas` plugin has been moved from `stage-2` preset to `stage-3` preset.
+- `babel-plugin-transform-react-jsx-self` has been added to the `react` preset in `development` mode. There is a new dev warning being added in react and this plugin adds the `__self={this}` JSX attribute to all JSX elements.
+- `babel-plugin-es2015-unicode-regex` has it's `regexpu-core` dependency updated to `2.x`.
+- Babel now uses [lerna 2.x](https://github.com/lerna/lerna)!
+
+#### New Feature
+* `babel-preset-es2016`
+  * [#3531](https://github.com/babel/babel/pull/3531) Add `es2016` preset. ([@chicoxyzzy](https://github.com/chicoxyzzy))
+* `babel-preset-stage-2`, `babel-preset-stage-3`
+  * [#3522](https://github.com/babel/babel/pull/3522) Promote `trailing-function-commas` to stage 3. ([@jacobrask](https://github.com/jacobrask))
+* `babel-plugin-transform-react-jsx-self`, `babel-preset-react`
+  * [#3540](https://github.com/babel/babel/pull/3540) Added jsx-self babel transform plugin. ([@jimfb](https://github.com/jimfb))
+
+#### Spec Compliancy
+* `babel-plugin-transform-es2015-unicode-regex`
+  * [#3338](https://github.com/babel/babel/pull/3338) Update to `regexpu-core@2.0.0` for ES2016 compliance. ([@mathiasbynens](https://github.com/mathiasbynens))
+
+#### Bug Fix
+* `babel-plugin-transform-react-jsx-self`
+  * [#3550](https://github.com/babel/babel/pull/3550) Fix some mistakes in the jsx-self transform. ([@loganfsmyth](https://github.com/loganfsmyth))
+* `babel-generator`
+  * [#3548](https://github.com/babel/babel/pull/3548) Fix incorrect Flow object whitespacing. ([@sampepose](https://github.com/sampepose))
+
+#### Internal
+* Other
+  * [#3509](https://github.com/babel/babel/pull/3509) Build: use lerna 2.x beta. ([@hzoo](https://github.com/hzoo))
+* `babel-code-frame`
+  * [#3533](https://github.com/babel/babel/pull/3533) `babel-code-frame`: Upgrade to `js-tokens@2`. ([@lydell](https://github.com/lydell))
+
+#### Commiters: 9
+- Henry Zhu ([hzoo](https://github.com/hzoo))
+- Jacob Rask ([jacobrask](https://github.com/jacobrask))
+- Jesse McCarthy ([jmm](https://github.com/jmm))
+- Jim ([jimfb](https://github.com/jimfb))
+- Logan Smyth ([loganfsmyth](https://github.com/loganfsmyth))
+- Mathias Bynens ([mathiasbynens](https://github.com/mathiasbynens))
+- Sam Pepose ([sampepose](https://github.com/sampepose))
+- Sergey Rubanov ([chicoxyzzy](https://github.com/chicoxyzzy))
+- Simon Lydell ([lydell](https://github.com/lydell))
+
 ## 6.10.4 (2016-06-21)
 
 #### Bug Fix
@@ -105,7 +243,7 @@ Just 2 fixes this release!
 
 Also, thanks to [@mucsi96](https://github.com/mucsi96) for catching the extraneous code coverage comments we were leaving when publishing!
 
-> We are removing/deprecating `babel-regenerator-runtime` in favor of depending on the original `regenerator-runtime` since the differences are resolved. Thanks to ([@benjamn](https://github.com/benjamn)) for the suggestion to maintain it (and for originally creating it!). 
+> We are removing/deprecating `babel-regenerator-runtime` in favor of depending on the original `regenerator-runtime` since the differences are resolved. Thanks to ([@benjamn](https://github.com/benjamn)) for the suggestion to maintain it (and for originally creating it!).
 
 #### Bug Fix
 * `babel-core`

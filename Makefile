@@ -12,6 +12,7 @@ build-dist: build
 	scripts/build-dist.sh
 	cd packages/babel-runtime; \
 	node scripts/build-dist.js
+	node scripts/generate-babel-types-docs.js
 
 watch: clean
 	./node_modules/.bin/gulp watch
@@ -52,15 +53,14 @@ publish:
 	rm -rf packages/*/lib
 	BABEL_ENV=production make build-dist
 	make test
-	./node_modules/.bin/lerna publish
+	./node_modules/.bin/lerna publish --only-explicit-updates
 	make clean
 	#./scripts/build-website.sh
 
 bootstrap:
 	npm install
 	./node_modules/.bin/lerna bootstrap
-	# remove all existing babel-runtimes and use the top-level babel-runtime
-	rm -rf packages/*/node_modules/babel-runtime
 	make build
 	cd packages/babel-runtime; \
+	npm install; \
 	node scripts/build-dist.js
