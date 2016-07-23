@@ -85,13 +85,12 @@ export function hasComputed(mutatorMap: Object): boolean {
 }
 
 export function toComputedObjectFromClass(obj: Object): Object {
-  let objExpr = t.arrayExpression([]);
+  var objExpr = t.objectExpression([]);
 
-  for (let i = 0; i < obj.properties.length; i++) {
-    let prop = obj.properties[i];
-    let val = prop.value;
-    val.properties.unshift(t.objectProperty(t.identifier("key"), t.toComputedKey(prop)));
-    objExpr.elements.push(val);
+  for (var i = 0; i < obj.properties.length; i++) {
+    var prop = obj.properties[i];
+    var val = prop.value;
+    objExpr.properties.unshift(t.objectProperty(t.identifier(t.toComputedKey(prop).value), val));
   }
 
   return objExpr;
